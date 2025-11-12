@@ -59,7 +59,7 @@ h2{margin-top:0;}
 
     <!-- Pantalla inicial -->
     <div id="start-screen">
-      <h1>¡Bienvenido!</h1>
+      <h1>Hola Sol!!</h1>
       <p>Esta es mi propuesta, pero primero tienes que "jugar" para desbloquearla.</p>
       <button id="start-game-btn">Comenzar la aventura</button>
     </div>
@@ -99,9 +99,9 @@ const startBtn = document.getElementById('start-game-btn');
 const quizContainer = document.getElementById('quiz-container');
 
 startBtn.addEventListener('click', ()=>{
-  startScreen.classList.add('hidden');
+  startScreen.style.display = 'none'; // desaparece completamente
   quizContainer.classList.remove('hidden');
-  loadQuestion(); // <-- cargar preguntas solo al empezar
+  loadQuestion(); // cargar preguntas solo al empezar
 });
 
 // Preguntas y respuestas
