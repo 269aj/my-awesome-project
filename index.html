@@ -101,6 +101,7 @@ const quizContainer = document.getElementById('quiz-container');
 startBtn.addEventListener('click', ()=>{
   startScreen.classList.add('hidden');
   quizContainer.classList.remove('hidden');
+  loadQuestion(); // <-- cargar preguntas solo al empezar
 });
 
 // Preguntas y respuestas
@@ -143,7 +144,7 @@ function loadQuestion(){
         } else {
           // Mostrar nivel 4
           quizContainer.classList.add("hidden");
-          level4Container.classList.remove("hidden");
+          level4Container.classList.remove('hidden');
         }
       } else {
         alert("¡Cuidado, esa respuesta es incorrecta!");
@@ -152,8 +153,6 @@ function loadQuestion(){
     optionsEl.appendChild(btn);
   });
 }
-
-loadQuestion();
 
 // Nivel 4 - X
 let found = 0;
