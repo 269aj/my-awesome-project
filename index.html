@@ -52,11 +52,16 @@ html, body {margin:0; padding:0; height:100%; font-family:Arial, sans-serif; bac
 .card h1{margin:0; font-size:26px; color:#35200f;}
 .card p{margin:8px 0 12px; font-size:18px;}
 .movie{font-weight:800; color:#612e0d; margin-top:6px; font-size:16px;}
-.chest{position:absolute; bottom:0; left:50%; transform:translateX(-50%) scale(0); width:120px; height:80px; background:#8b5a2b; border-radius:8px; transition:transform 0.6s ease;}
+.chest{position:absolute; bottom:0; left:50%; transform:translateX(-50%) scale(0); width:120px; height:80px; background:#8b5a2b; border-radius:8px; transition:transform 0.6s ease; overflow:hidden;}
 .chest.open{transform:translateX(-50%) scale(1);}
-.chest-lid{width:120px;height:40px;background:#b98b5a;border-radius:8px;position:absolute;top:0;left:0;}
-.hat, .whip{position:absolute;width:50px;height:50px;opacity:0; transition:0.6s; transform:translateY(-30px);}
-.hat.show, .whip.show{opacity:1; transform:translateY(0);}
+.chest-lid{width:120px;height:40px;background:#b98b5a;border-radius:8px;position:absolute;top:0;left:0; transform-origin:top; transition: transform 0.6s ease;}
+.chest.open .chest-lid{transform:rotateX(60deg);}
+.hat, .whip{
+  position:absolute; width:40px; height:20px; background:#222; border-radius:50%;
+  top:-30px; left:50%; transform:translateX(-50%) translateY(-30px); opacity:0; transition:0.6s;
+}
+.whip{width:60px; height:6px; background:#633; border-radius:3px; top:-20px;}
+.hat.show, .whip.show{opacity:1; transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -84,10 +89,9 @@ html, body {margin:0; padding:0; height:100%; font-family:Arial, sans-serif; bac
         <div class="movie">Indiana Jones: Raiders of the Lost Ark</div>
         <div class="chest" id="chest">
           <div class="chest-lid"></div>
+          <div class="hat" id="hat"></div>
+          <div class="whip" id="whip"></div>
         </div>
-        <!-- Sombrero y látigo en base64 -->
-        <img class="hat" id="hat" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAA..." alt="sombrero">
-        <img class="whip" id="whip" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAA..." alt="latigo">
       </div>
     </div>
   </div>
