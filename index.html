@@ -26,7 +26,8 @@ h2{margin-top:0;}
   margin:5px 0; padding:10px; border:none; border-radius:8px; background:#b98b5a; color:#fff; cursor:pointer; font-weight:700; transition:0.2s;
 }
 .options button:hover{background:#8b5a2b;}
-.hidden{display:none;}
+.hidden{display:none !important;} /* asegura que desaparezca completamente */
+
 /* Nivel 4 */
 #level4-container{position:relative; height:400px; background:#d9c09d; margin-top:20px; border-radius:12px;}
 .hotspot{
@@ -99,9 +100,9 @@ const startBtn = document.getElementById('start-game-btn');
 const quizContainer = document.getElementById('quiz-container');
 
 startBtn.addEventListener('click', ()=>{
-  startScreen.style.display = 'none'; // desaparece completamente
-  quizContainer.classList.remove('hidden');
-  loadQuestion(); // cargar preguntas solo al empezar
+  startScreen.classList.add('hidden'); // desaparece completamente
+  quizContainer.classList.remove('hidden'); // mostrar preguntas
+  loadQuestion(); // cargar preguntas
 });
 
 // Preguntas y respuestas
@@ -142,9 +143,8 @@ function loadQuestion(){
         if(currentLevel<quizData.length){
           loadQuestion();
         } else {
-          // Mostrar nivel 4
-          quizContainer.classList.add("hidden");
-          level4Container.classList.remove('hidden');
+          quizContainer.classList.add("hidden"); // ocultar quiz
+          level4Container.classList.remove('hidden'); // mostrar nivel 4
         }
       } else {
         alert("¡Cuidado, esa respuesta es incorrecta!");
