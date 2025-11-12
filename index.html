@@ -3,24 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nivel de X</title>
+<title>Mini Juego Indiana Jones</title>
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#6a583f;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+body {margin:0; font-family: Arial, sans-serif; background:#6a583f; color:#35200f;}
+.wrap{display:flex; justify-content:center; align-items:center; height:100vh;}
+.game-container{width:90vw; max-width:700px; background:#f0e2c8; border-radius:12px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5); position:relative;}
+
+/* Pantalla inicial */
+#start-screen{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center;
 }
+#start-screen button{
+  margin-top:20px; padding:12px 20px; border:none; border-radius:8px; background:#b98b5a; color:#fff; font-weight:700; cursor:pointer; transition:0.2s;
+}
+#start-screen button:hover{background:#8b5a2b;}
+
+/* Quiz */
+h2{margin-top:0;}
+.options{display:flex; flex-direction:column; margin-top:10px;}
+.options button{margin:5px 0;}
+.hidden{display:none !important;}
+
+/* Nivel final - X */
 #level-container{
   position:relative;
-  width:90vw;
-  max-width:700px;
+  width:100%;
   height:400px;
   background:#d9c09d;
   border-radius:12px;
+  margin-top:20px;
 }
 .hotspot{
   position:absolute;
@@ -48,51 +59,125 @@ body{
   75%{transform:translate(-50%,-50%) rotate(-10deg);}
   100%{transform:translate(-50%,-50%) rotate(0deg);}
 }
+
+/* Modal final */
 #modal{
-  position:fixed;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,0.5);
-  opacity:0;
-  pointer-events:none;
-  transition:0.3s;
+  position:fixed; inset:0; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:0.3s;
 }
 #modal.show{opacity:1; pointer-events:auto;}
-.card{
-  background:#fffef6;
-  padding:20px;
-  border-radius:12px;
-  text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
-}
+.card{background:#fffef6; padding:20px; border-radius:12px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5);}
 </style>
 </head>
 <body>
 
-<div id="level-container">
-  <h2 style="text-align:center;">¡Último nivel! Encuentra las X</h2>
-  <div class="hotspot" id="h1" style="left:20%;top:60%;">X</div>
-  <div class="hotspot" id="h2" style="left:42%;top:42%;">X</div>
-  <div class="hotspot" id="h3" style="left:65%;top:28%;">X</div>
-  <div class="hotspot" id="h4" style="left:30%;top:30%;">X</div>
-  <div class="hotspot" id="h5" style="left:55%;top:50%;">X</div>
-  <div class="hotspot" id="h6" style="left:75%;top:60%;">X</div>
-</div>
+<div class="wrap">
+  <div class="game-container">
 
-<div id="modal">
-  <div class="card">
-    <h1>¡¡Vla, pasaste!!</h1>
-    <p>¡Encontraste todas las X correctas!</p>
+    <!-- Pantalla inicial -->
+    <div id="start-screen">
+      <h1>Hola Sol!!</h1>
+      <p>Esta es mi propuesta, pero para desbloquearla tienes que "jugar"</p>
+      <button id="start-btn">Comenzar</button>
+    </div>
+
+    <!-- Contenedor de preguntas -->
+    <div id="quiz-container" class="hidden">
+      <h2 id="question">Pregunta</h2>
+      <div class="options" id="options"></div>
+    </div>
+
+    <!-- Nivel final - X -->
+    <div id="level-container" class="hidden">
+      <h2 style="text-align:center;">¡Último nivel! Encuentra las X</h2>
+      <div class="hotspot" id="h1" style="left:20%;top:60%;">X</div>
+      <div class="hotspot" id="h2" style="left:42%;top:42%;">X</div>
+      <div class="hotspot" id="h3" style="left:65%;top:28%;">X</div>
+      <div class="hotspot" id="h4" style="left:30%;top:30%;">X</div>
+      <div class="hotspot" id="h5" style="left:55%;top:50%;">X</div>
+      <div class="hotspot" id="h6" style="left:75%;top:60%;">X</div>
+    </div>
+
+    <!-- Modal final -->
+    <div id="modal">
+      <div class="card">
+        <h1>¡¡Vla, pasaste!!</h1>
+        <p>¿Quieres ir al cine?</p>
+        <p>Indiana Jones: Raiders of the Lost Ark</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
+// Preguntas
+const quizData = [
+  {
+    question: "¿Cuál es la ciudad antigua famosa por sus edificios tallados directamente en la roca en Jordania?",
+    options: ["El Cairo", "Jerusalén", "Petra"],
+    answer: "Petra"
+  },
+  {
+    question: "¿Qué ciudadela construida por los incas en lo alto de los Andes es famosa por sus terrazas agrícolas?",
+    options: ["Cusco", "Sacsayhuamán", "Machu Picchu"],
+    answer: "Machu Picchu"
+  },
+  {
+    question: "Varias culturas construyeron grandes pirámides. ¿Cuál de estas pirámides es la más grande como tumba para un gobernante?",
+    options: ["Pirámide de Chichén Itzá", "Pirámide de Keops", "Pirámide de Kefrén"],
+    answer: "Pirámide de Keops"
+  }
+];
+
+let currentLevel = 0;
+const startScreen = document.getElementById("start-screen");
+const startBtn = document.getElementById("start-btn");
+const quizContainer = document.getElementById("quiz-container");
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const levelContainer = document.getElementById("level-container");
+const modal = document.getElementById("modal");
+
+// Mezclar opciones
+function shuffle(array){ return array.sort(()=> Math.random() - 0.5); }
+
+// Cargar pregunta
+function loadQuestion(){
+  const current = quizData[currentLevel];
+  questionEl.textContent = current.question;
+  optionsEl.innerHTML = "";
+  const shuffledOptions = shuffle([...current.options]);
+  shuffledOptions.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.addEventListener("click", ()=>{
+      if(opt===current.answer){
+        currentLevel++;
+        if(currentLevel<quizData.length){
+          loadQuestion();
+        } else {
+          quizContainer.classList.add("hidden");
+          levelContainer.classList.remove("hidden");
+        }
+      } else {
+        alert("¡Cuidado, esa respuesta es incorrecta!");
+      }
+    });
+    optionsEl.appendChild(btn);
+  });
+}
+
+// Botón comenzar
+startBtn.addEventListener("click", ()=>{
+  startScreen.classList.add("hidden");
+  quizContainer.classList.remove("hidden");
+  loadQuestion();
+});
+
+// Nivel final - X
 let found = 0;
 const correctIds = ['h1','h2','h3']; // solo estas son correctas
 const hotspots = document.querySelectorAll('.hotspot');
-const modal = document.getElementById('modal');
 
 hotspots.forEach(h=>{
   h.addEventListener('click', ()=>{
