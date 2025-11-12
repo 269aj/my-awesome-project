@@ -7,12 +7,49 @@
 <style>
 body {margin:0; font-family: Arial, sans-serif; background:#6a583f; color:#35200f;}
 .wrap{display:flex; justify-content:center; align-items:center; height:100vh;}
-.game-container{width:90vw; max-width:700px; background:#f0e2c8; border-radius:12px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5);}
-button{padding:10px 20px; border:none; border-radius:8px; background:#b98b5a; color:#fff; font-weight:700; cursor:pointer; transition:0.2s;}
-button:hover{background:#8b5a2b;}
-.hidden{display:none !important;}
+.game-container{width:90vw; max-width:700px; background:#f0e2c8; border-radius:12px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.5); position:relative;}
+
+/* Pantalla inicial centrada */
+#start-screen{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; text-align:center;
+}
+#start-screen button{
+  margin-top:20px; padding:12px 20px; border:none; border-radius:8px; background:#b98b5a; color:#fff; font-weight:700; cursor:pointer; transition:0.2s;
+}
+#start-screen button:hover{background:#8b5a2b;}
+
+/* Quiz y opciones */
+h2{margin-top:0;}
 .options{display:flex; flex-direction:column; margin-top:10px;}
 .options button{margin:5px 0;}
+.hidden{display:none !important;}
+
+/* Nivel 4 - X */
+#level4-container{
+  position:relative; height:400px; margin-top:20px; background:#d9c09d; border-radius:12px;
+}
+.hotspot{
+  position:absolute; width:50px; height:50px; transform:translate(-50%,-50%);
+  cursor:pointer; display:flex; align-items:center; justify-content:center; border-radius:12px;
+  font-weight:900; font-size:22px; color:#6b3f1f; background:#f7edd6;
+  box-shadow:0 2px 4px rgba(0,0,0,0.25); transition:0.2s;
+}
+.hotspot.found{transform:translate(-50%,-50%) scale(1.3);}
+.hotspot.wrong{animation:shake 0.3s;}
+@keyframes shake{
+  0%{transform:translate(-50%,-50%) rotate(0deg);}
+  25%{transform:translate(-50%,-50%) rotate(-10deg);}
+  50%{transform:translate(-50%,-50%) rotate(10deg);}
+  75%{transform:translate(-50%,-50%) rotate(-10deg);}
+  100%{transform:translate(-50%,-50%) rotate(0deg);}
+}
+
+/* Modal final */
+#modal{
+  position:fixed; inset:0; display:flex; justify-content:center; align-items:center; background:rgba(0,0,0,0.5); opacity:0; pointer-events:none; transition:0.3s;
+}
+#modal.show{opacity:1; pointer-events:auto;}
+.card{background:#fffef6; padding:20px; border-radius:12px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5);}
 </style>
 </head>
 <body>
@@ -33,26 +70,28 @@ button:hover{background:#8b5a2b;}
       <div class="options" id="options"></div>
     </div>
 
-    <!-- Nivel final -->
+    <!-- Nivel final - X -->
     <div id="level4-container" class="hidden">
-      <h2>¡Último nivel! Encuentra las X</h2>
-      <div class="hotspot" id="h1" style="position:absolute; left:20%; top:60%;">X</div>
-      <div class="hotspot" id="h2" style="position:absolute; left:42%; top:42%;">X</div>
-      <div class="hotspot" id="h3" style="position:absolute; left:65%; top:28%;">X</div>
+      <h2 style="text-align:center;">¡Último nivel! Encuentra las X</h2>
+      <div class="hotspot" id="h1" style="left:20%;top:60%;">X</div>
+      <div class="hotspot" id="h2" style="left:42%;top:42%;">X</div>
+      <div class="hotspot" id="h3" style="left:65%;top:28%;">X</div>
     </div>
 
     <!-- Modal final -->
     <div id="modal" class="hidden">
-      <h1>¡¡Vla, pasaste!!</h1>
-      <p>¿Quieres ir al cine?</p>
-      <p>Indiana Jones: Raiders of the Lost Ark</p>
+      <div class="card">
+        <h1>¡¡Vla, pasaste!!</h1>
+        <p>¿Quieres ir al cine?</p>
+        <p>Indiana Jones: Raiders of the Lost Ark</p>
+      </div>
     </div>
 
   </div>
 </div>
 
 <script>
-// Datos de las preguntas
+// Datos de preguntas
 const quizData = [
   {
     question: "¿Cuál es la ciudad antigua famosa por sus edificios tallados directamente en la roca en Jordania?",
@@ -80,10 +119,8 @@ const optionsEl = document.getElementById("options");
 const level4Container = document.getElementById("level4-container");
 const modal = document.getElementById("modal");
 
-// Función para mezclar opciones
-function shuffle(array){
-  return array.sort(()=> Math.random() - 0.5);
-}
+// Mezclar opciones
+function shuffle(array){ return array.sort(()=> Math.random() - 0.5); }
 
 // Cargar pregunta
 function loadQuestion(){
@@ -130,7 +167,7 @@ hotspots.forEach(h=>{
       h.classList.add('found');
       found++;
       if(found===correctIds.length){
-        modal.classList.remove("hidden");
+        modal.classList.add("show");
       }
     } else {
       h.classList.add('wrong');
