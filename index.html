@@ -56,12 +56,6 @@ html, body {margin:0; padding:0; height:100%; font-family:Arial, sans-serif; bac
 .chest.open{transform:translateX(-50%) scale(1);}
 .chest-lid{width:120px;height:40px;background:#b98b5a;border-radius:8px;position:absolute;top:0;left:0; transform-origin:top; transition: transform 0.6s ease;}
 .chest.open .chest-lid{transform:rotateX(60deg);}
-.hat, .whip{
-  position:absolute; width:40px; height:20px; background:#222; border-radius:50%;
-  top:-30px; left:50%; transform:translateX(-50%) translateY(-30px); opacity:0; transition:0.6s;
-}
-.whip{width:60px; height:6px; background:#633; border-radius:3px; top:-20px;}
-.hat.show, .whip.show{opacity:1; transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
@@ -89,8 +83,6 @@ html, body {margin:0; padding:0; height:100%; font-family:Arial, sans-serif; bac
         <div class="movie">Indiana Jones: Raiders of the Lost Ark</div>
         <div class="chest" id="chest">
           <div class="chest-lid"></div>
-          <div class="hat" id="hat"></div>
-          <div class="whip" id="whip"></div>
         </div>
       </div>
     </div>
@@ -102,8 +94,6 @@ const startBtn = document.getElementById('startBtn');
 const instructions = document.getElementById('instructions');
 const modal = document.getElementById('modal');
 const chest = document.getElementById('chest');
-const hat = document.getElementById('hat');
-const whip = document.getElementById('whip');
 
 let found = 0;
 const correctIds = ['h1','h2','h3'];
@@ -122,7 +112,6 @@ hotspots.forEach(h=>{
       if(found===correctIds.length){
         modal.classList.add('show');
         chest.classList.add('open');
-        setTimeout(()=>{hat.classList.add('show'); whip.classList.add('show');},600);
       }
     }else{
       h.classList.add('wrong');
